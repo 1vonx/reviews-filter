@@ -13,6 +13,10 @@ public class Review {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date reviewCreatedOnDate;
 
+    public boolean hasText(){
+        return this.reviewText!=null && !this.reviewText.isEmpty();
+    }
+
     public Review(Long id, String reviewText, Integer rating, Date reviewCreatedOnDate) {
         this.id = id;
         this.reviewText = reviewText;
