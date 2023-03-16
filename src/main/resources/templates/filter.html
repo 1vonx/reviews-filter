@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Filter</title>
@@ -15,30 +15,36 @@
     <form>
         <label for="rating" class="form-label">Order by rating: </label>
         <select id="rating" class="form-select" name="ratingOrder">
-            <option value="" selected>Select</option>
-            <option value="highest">Highest First</option>
-            <option value="lowest">Lowest First</option>
+            <option value="">Select</option>
+            <option value="highest"
+                    th:selected="${selectedRatingOrder!=null && selectedRatingOrder.equals('highest')}">Highest First</option>
+            <option value="lowest"
+                    th:selected="${selectedRatingOrder!=null && selectedRatingOrder.equals('lowest')}">Lowest First</option>
         </select>
         <label for="minRating" class="form-label">Minimum rating </label>
         <select id="minRating" class="form-select" name="minRating">
-            <option value="" selected>Select</option>
-            <option value="5">5</option>
-            <option value="4">4</option>
-            <option value="3">3</option>
-            <option value="2">2</option>
-            <option value="1">1</option>
+            <option value="">Select</option>
+            <option value="5" th:selected="${selectedMinRating!=null && selectedMinRating.equals(5)}">5</option>
+            <option value="4" th:selected="${selectedMinRating!=null && selectedMinRating.equals(4)}">4</option>
+            <option value="3" th:selected="${selectedMinRating!=null && selectedMinRating.equals(3)}">3</option>
+            <option value="2" th:selected="${selectedMinRating!=null && selectedMinRating.equals(2)}">2</option>
+            <option value="1" th:selected="${selectedMinRating!=null && selectedMinRating.equals(1)}">1</option>
         </select>
         <label for="date" class="form-label">Order by date: </label>
         <select id="date" class="form-select" name="dateOrder">
-            <option value="" selected>Select</option>
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
+            <option value="">Select</option>
+            <option value="newest"
+                    th:selected="${selectedDateOrder!=null && selectedDateOrder.equals('newest')}">Newest First</option>
+            <option value="oldest"
+                    th:selected="${selectedDateOrder!=null && selectedDateOrder.equals('oldest')}">Oldest First</option>
         </select>
         <label for="text" class="form-label">Prioritize by text: </label>
         <select id="text" class="form-select" name="textPriority">
-            <option value="" selected>Select</option>
-            <option value="true">Yes</option>
-            <option value="false">No</option>
+            <option value="">Select</option>
+            <option value="true"
+                    th:selected="${selectedTextPriority!=null && selectedTextPriority.equals(true)}">Yes</option>
+            <option value="false"
+                    th:selected="${selectedTextPriority!=null && selectedTextPriority.equals(false)}">No</option>
         </select>
         <button class="btn btn-primary mt-3" type="submit">Filter</button>
     </form>

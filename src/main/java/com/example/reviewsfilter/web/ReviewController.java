@@ -34,6 +34,10 @@ public class ReviewController {
             reviewList = this.reviewService.listAllSortedAndFiltered(textPriority, ratingOrder, minRating, dateOrder);
 
         model.addAttribute("reviews", reviewList);
+        model.addAttribute("selectedRatingOrder", ratingOrder);
+        model.addAttribute("selectedMinRating", minRating);
+        model.addAttribute("selectedDateOrder", dateOrder);
+        model.addAttribute("selectedTextPriority", textPriority);
         return "filter";
     }
 }
