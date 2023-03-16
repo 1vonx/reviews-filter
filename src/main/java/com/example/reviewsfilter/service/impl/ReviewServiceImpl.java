@@ -28,33 +28,45 @@ public class ReviewServiceImpl implements ReviewService {
                                                  Integer minRating,
                                                  String dateOrder) {
         Comparator<Review> comparator = null;
+        Comparator<Review> ratingComparator = null;
+        Comparator<Review> dateComparator = null;
         List<Review> sortedReviews = this.listAll();
         if (minRating != null)
-            sortedReviews = new ArrayList<>(this.reviewRepository.findAllByMinRating(minRating));
+            sortedReviews = this.reviewRepository.findAllByMinRating(minRating);
 
-        if (textPriority !=null && textPriority) {
-            if (ratingOrder != null && !ratingOrder.isEmpty()) {
-                if (dateOrder != null && !dateOrder.isEmpty()) {
-                    comparator = Comparator.comparing(Review::hasText).reversed()
-                            .thenComparing(Review::getRating).reversed()
-                            .thenComparing(Review::getReviewCreatedOnDate).reversed();
-                }
-                comparator = Comparator.comparing(Review::hasText).reversed()
-                        .thenComparing(Review::getRating).reversed();
-            } else if (dateOrder != null && !dateOrder.isEmpty())
-                comparator = Comparator.comparing(Review::hasText).reversed()
-                        .thenComparing(Review::getReviewCreatedOnDate).reversed();
-            comparator = Comparator.comparing(Review::hasText).reversed();
-        } else {
-            if (ratingOrder != null && !ratingOrder.isEmpty()) {
-                if (dateOrder != null && !dateOrder.isEmpty()) {
-                    comparator = Comparator.comparing(Review::getRating).reversed()
-                            .thenComparing(Review::getReviewCreatedOnDate).reversed();
-                }
-                comparator = Comparator.comparing(Review::getRating).reversed();
-            } else if (dateOrder != null && !dateOrder.isEmpty())
-                comparator = Comparator.comparing(Review::getReviewCreatedOnDate).reversed();
+        if (ratingOrder != null && !ratingOrder.isEmpty()) {
+            if (ratingOrder.equalsIgnoreCase("highest"))
+                ratingComparator = Comparator.comparing(Review::getRating).reversed();
+            else
+                ratingComparator = Comparator.comparing(Review::getRating);
         }
+
+        if (dateOrder != null && !dateOrder.isEmpty()) {
+            if (dateOrder.equalsIgnoreCase("newest"))
+                dateComparator = Comparator.comparing(Review::getReviewCreatedOnDate).reversed();
+            else
+                dateComparator = Comparator.comparing(Review::getReviewCreatedOnDate);
+        }
+
+        if (textPriority != null && textPriority) {
+            if (ratingComparator != null && dateComparator != null)
+                comparator = Comparator.comparing(Review::hasText).reversed()
+                        .thenComparing(ratingComparator)
+                        .thenComparing(dateComparator);
+            else if (ratingComparator != null)
+                comparator = Comparator.comparing(Review::hasText).reversed()
+                        .thenComparing(ratingComparator);
+            else if (dateComparator != null)
+                comparator = Comparator.comparing(Review::hasText).reversed()
+                        .thenComparing(dateComparator);
+            else
+                comparator = Comparator.comparing(Review::hasText).reversed();
+        } else if (ratingComparator != null && dateComparator != null)
+            comparator = ratingComparator.thenComparing(dateComparator);
+        else if (ratingComparator != null)
+            comparator = ratingComparator;
+        else if (dateComparator != null)
+            comparator = dateComparator;
 
         if (comparator != null)
             sortedReviews.sort(comparator);

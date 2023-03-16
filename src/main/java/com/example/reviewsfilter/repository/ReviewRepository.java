@@ -5,6 +5,7 @@ import com.example.reviewsfilter.model.Review;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class ReviewRepository {
@@ -15,6 +16,6 @@ public class ReviewRepository {
     public List<Review> findAllByMinRating(Integer minRating){
         return DataInitializer.reviews.stream()
                 .filter(r->r.getRating()>=minRating)
-                .toList();
+                .collect(Collectors.toList());
     }
 }
